@@ -6,6 +6,7 @@ import datetime
 import logging
 import re
 from xml.etree import ElementTree as ETree
+import xml.sax.saxutils as saxutils
 
 from . import compat
 
@@ -106,7 +107,9 @@ def render_row(row_values, row_template, line, encoding='utf-8'):
     for value, cell_template in zip(row_values, cells):
         update_cell(cell_template, line, value)
     row_template.set('r', compat.text_type(line))
-    return ETree.tostring(row_template, encoding=encoding)
+    string_with_entities_escaped = ETree.tostring(row_template, encoding=encoding)
+    string_unescaped = saxutils.unescape(string_with_entities_escaped)
+    return string_unescaped
 
 
 def update_cell(cell, line, value):
