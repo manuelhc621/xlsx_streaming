@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 OPENXML_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
 OPENXML_NS_R = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 OPENXML_COLUMN_RE = re.compile(r'([A-Z]+)[0-9]+')
-entityref = re.compile('&[^#]')
+entityref = re.compile('&(?=[^#])')
 
 
 def _timezone_helper():
@@ -111,7 +111,7 @@ def render_row(row_values, row_template, line, encoding='utf-8'):
     string_with_entities_escaped = ETree.tostring(row_template, encoding=encoding)
     string_unescaped = saxutils.unescape(string_with_entities_escaped)
     #escape again only the & which are not part of an entity
-    string_unescaped = entityref.sub('&amp; ', string_unescaped)
+    string_unescaped = entityref.sub('&amp;', string_unescaped)
     return string_unescaped
 
 
