@@ -112,6 +112,15 @@ def render_row(row_values, row_template, line, encoding='utf-8'):
     string_unescaped = saxutils.unescape(string_with_entities_escaped)
     #escape again only the & which are not part of an entity
     string_unescaped = entityref.sub('&amp;', string_unescaped)
+    #there are some times when double entyry references are appearing in the code, lets remove it
+    if "&amp;lt;" in string_unescaped:
+        string_unescaped = string_unescaped.replace("&amp;lt;", "&lt;")
+    if "&amp;gt;" in string_unescaped:
+        string_unescaped = string_unescaped.replace("&amp;gt;", "&gt;")
+    if "&amp;quot;" in string_unescaped:
+        string_unescaped = string_unescaped.replace("&amp;quot;", "&quot;")
+    if "&amp;#10;" in string_unescaped:
+        string_unescaped = string_unescaped.replace("&amp;#10;", "&#10;")
     return string_unescaped
 
 
